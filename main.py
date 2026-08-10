@@ -1,6 +1,6 @@
 from analyzer import extract_keywords , describtion
 from summarizer import summarize
-from file_reader import loadPDF
+from file_reader import load_PDF , load_text
 
 import sys
 sys.stdout.reconfigure(encoding="utf-8")
@@ -17,10 +17,3 @@ for word , count in keywords:
 print("------------- PDF summary -------------")
 summarized_text = summarize(text,sentence_count=3)
 print(summarized_text)
-
-"""
-f = open("result.txt",'w')
-f.write(summarized_text)
-f.close()
-print("\n\n Result stored!")
-"""
