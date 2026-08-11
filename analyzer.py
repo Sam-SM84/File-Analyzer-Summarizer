@@ -2,8 +2,10 @@ from nltk.corpus import stopwords
 from nltk.tokenize import word_tokenize
 from collections import Counter
 from hazm import *
+from langdetect import detect
 
-def print_keywords(text,n,english=True):
+def print_keywords(text,n):
+    english = detect(text) == 'en'
     if english : 
         tokens = word_tokenize(text)
         
@@ -23,8 +25,8 @@ def print_keywords(text,n,english=True):
             print(f"{word} : {count}")
 
     else :
-        n = Normalizer()
-        text = n.normalize(text)
+        normalizer = Normalizer()
+        text = normalizer.normalize(text)
         tokens = word_tokenize(text)
         stop_words = set(stopwords_list())
 
@@ -35,9 +37,20 @@ def print_keywords(text,n,english=True):
                 kalame not in symbols and
                 len(kalame) > 1) :
                 cleaned.append(kalame)
-        print(cleaned)
 
-def describtion(text,file):
+        keywords =  Counter(cleaned).most_common(n)
+        for word , count in keywords:
+            print(f"{word} : {count}")
+
+def describtion(text):
     print("Text Describtion : ")
-    print("Pages : ",len(file))
-    print("Words : ",len(text.split()))
+    print("Pages : ",len(text))
+    print("Words : ",len(return_string(text).split()))
+    print("Detected language : ",detect(text))
+
+def return_string(text_list):
+    text_string = ""
+    for page in text_list:
+        text_string += page
+    return text_string
+
