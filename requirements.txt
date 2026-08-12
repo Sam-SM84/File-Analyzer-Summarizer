@@ -1,0 +1,6 @@
+pymupdf
+nltk
+sumy
+hazm
+langdetect
+streamlit
