@@ -1,11 +1,17 @@
 import pymupdf
 
-def load_PDF(path):
+def load_PDF(arg):
     text = []
-    file = pymupdf.open(path)
+    if isinstance(arg,str):
+        file = pymupdf.open(arg)
+
+    else :
+        text_file = arg.read()
+        file = pymupdf.open(stream=text_file)
     
     for page in file:
         text.append(page.get_text())
+
     return text
 
 def load_text(path):
@@ -27,9 +33,6 @@ def search_text(text_list,word,n):
 
             result.append({"Page" : page_number,"Text" : clipped})
 
-    for r in  result:
-        print("----------------------------")
-        print("Page : ",r['Page'])
-        print(r['Text'])
+    return result
 
 
