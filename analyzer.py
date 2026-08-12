@@ -4,8 +4,9 @@ from collections import Counter
 from hazm import *
 from langdetect import detect
 
-def print_keywords(text,n):
+def return_keywords(text,n):
     english = detect(text) == 'en'
+    message = []
     if english : 
         tokens = word_tokenize(text)
         
@@ -22,7 +23,8 @@ def print_keywords(text,n):
 
         keywords =  Counter(cleaned).most_common(n)
         for word , count in keywords:
-            print(f"{word} : {count}")
+            #print(f"{word} : {count}")
+            message.append(f"{word} : {count}\n")
 
     else :
         normalizer = Normalizer()
@@ -40,13 +42,19 @@ def print_keywords(text,n):
 
         keywords =  Counter(cleaned).most_common(n)
         for word , count in keywords:
-            print(f"{word} : {count}")
+            #print(f"{word} : {count}")
+            message.append(f"{word} : {count}\n") 
+
+    return message
 
 def describtion(text):
-    print("Text Describtion : ")
-    print("Pages : ",len(text))
-    print("Words : ",len(return_string(text).split()))
-    print("Detected language : ",detect(text))
+    result = []
+    result.append("-------------------------")
+    result.append("Text Describtion : ")
+    result.append("Pages : " + str(len(text)))
+    result.append("Words : " + str(len(return_string(text).split())))
+    result.append("Detected language : " + str(detect(return_string(text))))
+    return result
 
 def return_string(text_list):
     text_string = ""
