@@ -7,6 +7,8 @@ sys.stdout.reconfigure(encoding="utf-8")
 
 import streamlit as st
 
+#python -m streamlit run F:\my_python\paperAnalyzer\main.py
+
 st.title("File Analyzer/Summarizer")
 
 uploaded_file = st.file_uploader(
@@ -17,7 +19,7 @@ uploaded_file = st.file_uploader(
 text_list = []
 
 if uploaded_file:
-    st.success("Successfuly uploaded")
+    st.success(f"Successfuly uploaded . Selected file : {uploaded_file.name}")
     text_list = load_PDF(uploaded_file)
 else:
     st.error("There currently no files")
@@ -36,11 +38,15 @@ elif method == 'Find word':
     word = st.text_input("Enter the word : ")
     distance = st.slider("Choose the distance level of the word displayment : ",min_value=5,max_value=100)
     if st.button("search") :
-        result = search_text(text_list,word,distance)
-        for r in result:
-            st.write("-------------------------")
-            st.write("Page : ",r['Page'] + 1)
-            st.write("Text : ",r['Text'])
+        if word:
+            result = search_text(text_list,word,distance)
+            for r in result:
+                st.write("-------------------------")
+                st.write("Page : ",r['Page'] + 1)
+                st.write("Text : ",r['Text'])
+
+        else :
+            st.error("Please fill the input box")
 
 elif method == 'Summarize':
     count = st.slider("Choose the paragraph amount of the summarized text : ",min_value=1,max_value=7)
