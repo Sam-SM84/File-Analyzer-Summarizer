@@ -4,3 +4,4 @@ sumy
 hazm
 langdetect
 streamlit
+pandas
