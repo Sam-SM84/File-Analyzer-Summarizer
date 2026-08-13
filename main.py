@@ -30,21 +30,32 @@ else:
 
 method = st.selectbox("What should this program do? : ",['Extract keywords','Find word','Summarize','Describtion'])
 if method == 'Extract keywords':
-    #st.write(return_string(text_list))
+    em = st.selectbox("Select Extraction method : ",['Most common','TF-IDF'])
     n = st.number_input("Enter number of top common words :", min_value=5, format="%d")
-    if st.button("Show results") : 
-        output.clear()
-        output.append("-------------------------")
-        output.append("Top " + str(n) + " repeated words : ")
-            #st.write("Top " + str(n) + " repeated words : ")
-        keywords = return_keywords(return_string(text_list),n)
-        for i in keywords:
-            output.append(str(i['Word']) + " : " + str(i['Count']))
-                #st.write(i)
-        output.append("-------------------------")
+    if em == 'Most common':
+        if st.button("Show results") : 
+            output.clear()
+            output.append("-------------------------")
+            output.append("Top " + str(n) + " repeated words : ")
+                #st.write("Top " + str(n) + " repeated words : ")
+            keywords = return_keywords(return_string(text_list),n)
+            for i in keywords:
+                output.append(str(i['Word']) + " : " + str(i['Count']))
+                    #st.write(i)
+            output.append("-------------------------")
 
-        df = pd.DataFrame(keywords)
-        chart = st.bar_chart(df, x="Word", y="Count")
+            df = pd.DataFrame(keywords)
+            chart = st.bar_chart(df, x="Word", y="Count")
+
+    else:
+        if st.button("Show results") : 
+            output.clear()
+            output.append("-------------------------")
+            output.append("Top " + str(n) + " TF-IDF scores : ")
+            keywords = return_TFIDF(text_list,n)
+            for i in keywords:
+                output.append(str(i['Word']) + " : " + str(i['Score']))
+            output.append("-------------------------")
         
 
 elif method == 'Find word':
@@ -88,5 +99,3 @@ else:
 
 for result in output:
     st.write(result)
-
-
