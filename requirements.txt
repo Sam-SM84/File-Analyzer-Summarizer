@@ -5,3 +5,4 @@ hazm
 langdetect
 streamlit
 pandas
+transformers
