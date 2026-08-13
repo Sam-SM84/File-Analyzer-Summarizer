@@ -11,7 +11,6 @@ def return_keywords(text,n):
         tokens = word_tokenize(text)
         
         stop_words = set(stopwords.words('english'))
-        #tokens = cleanse(text)
         cleaned = []
         symbols = ['(',')',',','.','-','/','_']
         for word in tokens:
@@ -23,8 +22,7 @@ def return_keywords(text,n):
 
         keywords =  Counter(cleaned).most_common(n)
         for word , count in keywords:
-            #print(f"{word} : {count}")
-            message.append(f"{word} : {count}\n")
+            message.append({"Word" : word,"Count" : count}) 
 
     else :
         normalizer = Normalizer()
@@ -42,8 +40,7 @@ def return_keywords(text,n):
 
         keywords =  Counter(cleaned).most_common(n)
         for word , count in keywords:
-            #print(f"{word} : {count}")
-            message.append(f"{word} : {count}\n") 
+            message.append({"Word" : word,"Count" : count}) 
 
     return message
 
