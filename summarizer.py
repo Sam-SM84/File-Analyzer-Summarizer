@@ -4,15 +4,6 @@ from sumy.summarizers.text_rank import TextRankSummarizer
 
 from transformers import T5Tokenizer, T5ForConditionalGeneration
 
-def summarize(text,paragraph_count=5):
-    parser = PlaintextParser.from_string(text,Tokenizer('english'))
-    summarizer = TextRankSummarizer()
-
-    summary = summarizer(parser.document,paragraph_count)
-    result = "\n\n".join(str(sentence) for sentence in summary)
-
-    return result
-
 def summarize_textRank(text,paragraph_count=5):
     parser = PlaintextParser.from_string(text,Tokenizer('english'))
     summarizer = TextRankSummarizer()
