@@ -1,5 +1,5 @@
 from analyzer import *
-from summarizer import summarize
+from summarizer import *
 from file_reader import *
 
 import sys
@@ -64,10 +64,19 @@ elif method == 'Find word':
             st.error("Please fill the input box")
 
 elif method == 'Summarize':
-    count = st.slider("Choose the paragraph amount of the summarized text : ",min_value=1,max_value=7)
-    if st.button("Show results") : 
-        output.clear()
-        output.append(summarize(return_string(text_list),count))
+    sm = st.selectbox("Select a summarization method : ",['TextRank','T5 (English Only)'])
+    if sm == 'TextRank':
+        count = st.slider("Choose the paragraph amount of the summarized text : ",min_value=1,max_value=10)
+        if st.button("Show results") : 
+            output.clear()
+            output.append(summarize_textRank(return_string(text_list),count))
+
+    else:
+        min_length = st.slider("Minimum length : ",min_value=10,max_value=20)
+        max_length = st.slider("Maximum length : ",min_value=20,max_value=100)
+        if st.button("Show results"):
+            output.clear()
+            output.append(summarize_T5(return_string(text_list),min_length,max_length))
 
 else:
     if st.button("Show results") : 
