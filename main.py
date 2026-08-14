@@ -21,9 +21,18 @@ uploaded_file = st.file_uploader(
 text_list = []
 output = []
 
+#st.write(uploaded_file.type)
 if uploaded_file:
+    pdf = not (uploaded_file.type == 'text/plain')
     st.success(f"Successfuly uploaded . Selected file : {uploaded_file.name}")
-    text_list = load_PDF(uploaded_file)
+    if pdf:
+        text_list = load_PDF(uploaded_file)
+
+    else :
+        text_list = load_text(uploaded_file)
+        #st.write(type(text_list))
+        st.write(text_list)
+        
 else:
     st.error("There currently no files")
     
@@ -91,7 +100,7 @@ elif method == 'Summarize':
 
 else:
     if st.button("Show results") : 
-        desc = describtion(text_list)
+        desc = describtion(text_list,pdf)
         output.clear()
         for i in desc : 
             output.append(i)
