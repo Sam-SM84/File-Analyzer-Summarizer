@@ -51,7 +51,7 @@ def return_keywords(text,n):
     return message
 
 def return_TFIDF(text_list,n):
-    english = detect(return_string(text_list)) == 'en'
+    english = isEnglish(return_string(text_list))
 
     if english :
         tfidf = TfidfVectorizer(stop_words="english")
