@@ -41,7 +41,7 @@ method = st.selectbox("What should this program do? : ",['Extract keywords','Fin
 if method == 'Extract keywords':
     em = st.selectbox("Select Extraction method : ",['Most common','TF-IDF'])
     n = st.number_input("Enter number of top common words :", min_value=5, format="%d")
-    if em == 'Most common':
+    if em == 'Most common' and uploaded_file:
         if st.button("Show results") : 
             output.clear()
             output.append("-------------------------")
@@ -57,7 +57,7 @@ if method == 'Extract keywords':
             chart = st.bar_chart(df, x="Word", y="Count")
 
     else:
-        if st.button("Show results") : 
+        if st.button("Show results") and uploaded_file: 
             output.clear()
             output.append("-------------------------")
             output.append("Top " + str(n) + " TF-IDF scores : ")
@@ -72,7 +72,7 @@ elif method == 'Find word':
     output.clear()
     output.append("Results for the search of (" + word + ")")
     distance = st.slider("Choose the distance level of the word displayment : ",min_value=5,max_value=100)
-    if st.button("Show results") : 
+    if st.button("Show results") and uploaded_file: 
         if word:
             result = search_text(text_list,word,distance)
             for r in result:
@@ -87,7 +87,7 @@ elif method == 'Summarize':
     sm = st.selectbox("Select a summarization method : ",['TextRank','T5 (English Only)'])
     if sm == 'TextRank':
         count = st.slider("Choose the paragraph amount of the summarized text : ",min_value=1,max_value=10)
-        if st.button("Show results") : 
+        if st.button("Show results") and uploaded_file: 
             output.clear()
             output.append(summarize_textRank(return_string(text_list),count))
 
@@ -99,24 +99,24 @@ elif method == 'Summarize':
             output.append(summarize_T5(return_string(text_list),min_length,max_length))
 
 else:
-    if st.button("Show results") : 
+    if st.button("Show results") and uploaded_file: 
         desc = describtion(text_list,pdf)
         output.clear()
         for i in desc : 
             output.append(i)
         output.append("-------------------------")
 
-for line in output:
-    if line != "-------------------------" :
-        if isEnglish(line):
-            direction = 'ltr'
-            text_align = 'left'
-        else:
-            direction = 'rtl'
-            text_align = 'right'
+if uploaded_file:
+    if isEnglish(return_string(output)):
+        direction = 'ltr'
+        text_align = 'left'
+    else:
+        direction = 'rtl'
+        text_align = 'right'
 
-        
-        st.markdown(f"""
-        <div style = "direction : {direction};text-align : {text_align}">
-        {line}
-        """,unsafe_allow_html=True)
+    for line in output:
+        if line != "-------------------------" : 
+            st.markdown(f"""
+            <div style = "direction : {direction};text-align : {text_align}">
+            {line}
+            """,unsafe_allow_html=True)
