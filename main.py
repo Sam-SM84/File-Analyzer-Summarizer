@@ -31,7 +31,7 @@ if uploaded_file:
     else :
         text_list = load_text(uploaded_file)
         #st.write(type(text_list))
-        st.write(text_list)
+        #st.write(text_list)
         
 else:
     st.error("There currently no files")
@@ -106,5 +106,17 @@ else:
             output.append(i)
         output.append("-------------------------")
 
-for result in output:
-    st.write(result)
+for line in output:
+    if line != "-------------------------" :
+        if isEnglish(line):
+            direction = 'ltr'
+            text_align = 'left'
+        else:
+            direction = 'rtl'
+            text_align = 'right'
+
+        
+        st.markdown(f"""
+        <div style = "direction : {direction};text-align : {text_align}">
+        {line}
+        """,unsafe_allow_html=True)
