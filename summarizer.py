@@ -13,7 +13,7 @@ def summarize_textRank(text,paragraph_count=5):
 
     return result
 
-def summarize_T5(text):
+def summarize_T5(text,minL,maxL):
     model_name = "t5-small"
     tokenizer = T5Tokenizer.from_pretrained(model_name)
     model = T5ForConditionalGeneration.from_pretrained(model_name)
@@ -28,10 +28,9 @@ def summarize_T5(text):
 
     summary_id = model.generate(
     token_id,
-    max_length=60,
-    min_length=20,
+    max_length=maxL,
+    min_length=minL,
     num_beams=4,
     )
     #print(type(tokenizer.decode(summary_id[0])))
     return tokenizer.decode(summary_id[0], skip_special_tokens=True)
-
