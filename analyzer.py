@@ -6,7 +6,7 @@ from langdetect import detect
 from sklearn.feature_extraction.text import TfidfVectorizer
 
 def return_keywords(text,n):
-    english = detect(text) == 'en'
+    english = isEnglish(text)
     message = []
     if english : 
         tokens = word_tokenize(text)
@@ -57,7 +57,7 @@ def return_TFIDF(text_list,n):
         tfidf = TfidfVectorizer(stop_words="english")
     else :
         tfidf = TfidfVectorizer()
-        text_list = clean_list_persian()
+        text_list = clean_list_persian(text_list)
     result = tfidf.fit_transform(text_list)
     words = tfidf.get_feature_names_out()
     scores = result.mean(axis=0).A1
@@ -85,6 +85,7 @@ def return_string(text_list):
     text_string = ""
     for page in text_list:
         text_string += page
+        text_string += '\n'
     return text_string
 
 def clean_list_english(text_list):
@@ -109,3 +110,6 @@ def clean_list_persian(text_list):
             len(kalame) > 1) :
             tamiz.append(kalame)
     return tamiz
+
+def isEnglish(text):
+    return detect(text) == 'en'
