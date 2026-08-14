@@ -20,7 +20,7 @@ uploaded_file = st.file_uploader(
 )
 text_list = []
 output = []
-
+run = False
 #st.write(uploaded_file.type)
 if uploaded_file:
     pdf = not (uploaded_file.type == 'text/plain')
@@ -29,12 +29,13 @@ if uploaded_file:
         text_list = load_PDF(uploaded_file)
 
     else :
-        text_list = load_text(uploaded_file)
+        text_list = load_text(uploaded_file)  
         #st.write(type(text_list))
         #st.write(text_list)
         
 else:
     st.error("There currently no files")
+    run = False
     
 
 method = st.selectbox("What should this program do? : ",['Extract keywords','Find word','Summarize','Describtion'])
@@ -43,6 +44,7 @@ if method == 'Extract keywords':
     n = st.number_input("Enter number of top common words :", min_value=5, format="%d")
     if em == 'Most common' and uploaded_file:
         if st.button("Show results") : 
+            run = True
             output.clear()
             output.append("-------------------------")
             output.append("Top " + str(n) + " repeated words : ")
@@ -58,6 +60,7 @@ if method == 'Extract keywords':
 
     else:
         if st.button("Show results") and uploaded_file: 
+            run = True
             output.clear()
             output.append("-------------------------")
             output.append("Top " + str(n) + " TF-IDF scores : ")
@@ -73,6 +76,7 @@ elif method == 'Find word':
     output.append("Results for the search of (" + word + ")")
     distance = st.slider("Choose the distance level of the word displayment : ",min_value=5,max_value=100)
     if st.button("Show results") and uploaded_file: 
+        run = True
         if word:
             result = search_text(text_list,word,distance)
             for r in result:
@@ -88,25 +92,28 @@ elif method == 'Summarize':
     if sm == 'TextRank':
         count = st.slider("Choose the paragraph amount of the summarized text : ",min_value=1,max_value=10)
         if st.button("Show results") and uploaded_file: 
+            run = True
             output.clear()
             output.append(summarize_textRank(return_string(text_list),count))
 
     else:
         min_length = st.slider("Minimum length : ",min_value=10,max_value=20)
         max_length = st.slider("Maximum length : ",min_value=20,max_value=100)
-        if st.button("Show results"):
+        if st.button("Show results") and uploaded_file:
+            run = True
             output.clear()
             output.append(summarize_T5(return_string(text_list),min_length,max_length))
 
 else:
     if st.button("Show results") and uploaded_file: 
+        run = True
         desc = describtion(text_list,pdf)
         output.clear()
         for i in desc : 
             output.append(i)
         output.append("-------------------------")
 
-if uploaded_file:
+if uploaded_file and run:
     if isEnglish(return_string(output)):
         direction = 'ltr'
         text_align = 'left'
