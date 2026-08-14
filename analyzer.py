@@ -52,12 +52,12 @@ def return_keywords(text,n):
 
 def return_TFIDF(text_list,n):
     english = detect(return_string(text_list)) == 'en'
-    if english : 
-        text_list = clean_list_english(text_list)
-    else :
-        text_list = clean_list_persian(text_list)
 
-    tfidf = TfidfVectorizer()
+    if english :
+        tfidf = TfidfVectorizer(stop_words="english")
+    else :
+        tfidf = TfidfVectorizer()
+        text_list = clean_list_persian()
     result = tfidf.fit_transform(text_list)
     words = tfidf.get_feature_names_out()
     scores = result.mean(axis=0).A1
@@ -69,13 +69,16 @@ def return_TFIDF(text_list,n):
         message.append({"Word" : word,"Score" : score})
     return message
 
-def describtion(text):
+def describtion(text_list,pdf):
     result = []
     result.append("-------------------------")
     result.append("Text Describtion : ")
-    result.append("Pages : " + str(len(text)))
-    result.append("Words : " + str(len(return_string(text).split())))
-    result.append("Detected language : " + str(detect(return_string(text))))
+    if pdf:
+        result.append("Pages : " + str(len((text_list))))
+    else :
+        result.append("Lines : " + str(len((text_list))))
+    result.append("Words : " + str(len(return_string(text_list).split())))
+    result.append("Detected language : " + str(detect(return_string(text_list))))
     return result
 
 def return_string(text_list):
