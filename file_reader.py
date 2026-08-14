@@ -14,10 +14,17 @@ def load_PDF(arg):
 
     return text
 
-def load_text(path):
-    file = open(path,'r')
-    text = file.read()
-    file.close()
+def load_text(arg):
+    text = []
+    if isinstance(arg,str):
+        file = open(arg,'r')
+        text = file.read()
+        file.close()
+
+    else :
+        text = arg.read().decode('utf-8')
+    
+    text = [part.strip() for part in text.splitlines() if part.strip()]
     return text
 
 def search_text(text_list,word,n):
