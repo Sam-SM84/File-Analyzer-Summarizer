@@ -1,5 +1,6 @@
 pymupdf
 nltk
+collections
 sumy
 hazm
 langdetect
