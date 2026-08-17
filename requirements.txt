@@ -7,4 +7,5 @@ langdetect
 streamlit
 pandas
 transformers
-sklearn
+scikit-learn
+os
